@@ -1,0 +1,53 @@
+{
+    "_comment": "DO NOT EDIT: FILE GENERATED AUTOMATICALLY BY PTERODACTYL PANEL - PTERODACTYL.IO",
+    "meta": {
+        "version": "PTDL_v2",
+        "update_url": null
+    },
+    "exported_at": "2025-10-14T00:00:00+00:00",
+    "name": "Discord Music Bot (Python)",
+    "author": "contact@manus.im",
+    "description": "Un bot musical Discord simple qui lit de la musique depuis YouTube avec système de file d'attente, conçu pour fonctionner sur Pterodactyl.",
+    "features": null,
+    "docker_images": {
+        "Python 3.11": "ghcr.io/parkervcp/yolks:python_3.11"
+    },
+    "file_denylist": [],
+    "startup": "python3.11 bot.py",
+    "config": {
+        "files": "{}",
+        "startup": "{\r\n    \"done\": \"Bot connecté en tant que\"\r\n}",
+        "logs": "{}",
+        "stop": "^C"
+    },
+    "scripts": {
+        "installation": {
+            "script": "#!/bin/bash\r\n\r\napt update\r\napt install -y git ffmpeg libopus-dev libffi-dev libsodium-dev build-essential python3-pip\r\n\r\ncd /mnt/server\r\n\r\necho \"Installation des dépendances Python...\"\r\npython3.11 -m pip install --upgrade pip\r\npython3.11 -m pip install discord.py yt-dlp PyNaCl\r\n\r\necho \"Installation terminée!\"",
+            "container": "ghcr.io/parkervcp/installers:debian",
+            "entrypoint": "/bin/bash"
+        }
+    },
+    "variables": [
+        {
+            "name": "[REQUIS] Token Discord",
+            "description": "Le token de votre bot Discord. Obtenez-le sur https://discord.com/developers/applications",
+            "env_variable": "DISCORD_TOKEN",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|string",
+            "field_type": "text"
+        },
+        {
+            "name": "Préfixe du Bot",
+            "description": "Le préfixe pour les commandes du bot (par défaut: !)",
+            "env_variable": "PREFIX",
+            "default_value": "!",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|string|max:5",
+            "field_type": "text"
+        }
+    ]
+}
+
