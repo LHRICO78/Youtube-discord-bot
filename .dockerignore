@@ -1,0 +1,43 @@
+# Git
+.git
+.gitignore
+
+# Documentation
+*.md
+!README.md
+
+# Python
+__pycache__
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Virtual environments
+venv/
+ENV/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Configuration locale
+.env
+configs/*.json
+
+# Cache et fichiers temporaires
+cache/
+*.webm
+*.m4a
+*.mp3
+*.opus
+youtube-*
+
+# Fichiers Pterodactyl
+egg-*.json
+*.zip
+*.png
+

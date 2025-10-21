@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  discord-music-bot:
+    build: .
+    container_name: discord-music-bot
+    restart: unless-stopped
+    environment:
+      # IMPORTANT: Remplacez par votre token Discord
+      - DISCORD_TOKEN=${DISCORD_TOKEN}
+      # Préfixe par défaut (optionnel, peut être changé via !music mod)
+      - PREFIX=${PREFIX:-!}
+    volumes:
+      # Persister les configurations entre les redémarrages
+      - ./configs:/app/configs
+      # Optionnel: Persister les fichiers audio téléchargés
+      - ./cache:/app/cache
+    # Limites de ressources (optionnel)
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 512M
+        reservations:
+          cpus: '0.5'
+          memory: 256M
+

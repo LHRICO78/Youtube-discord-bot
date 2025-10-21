@@ -79,12 +79,58 @@ Seuls les utilisateurs avec la permission Discord **"Gérer le serveur"** peuven
 - `egg-discord-music-bot.json`: Le fichier de configuration de l'egg pour Pterodactyl.
 - `DESIGN.md`: Documentation technique de l'architecture du système de personnalisation.
 
-## Déploiement sur Pterodactyl
+## Méthodes de Déploiement
+
+### Option 1 : Docker (Recommandé)
+
+La méthode la plus simple et la plus portable.
+
+```bash
+# Cloner le repository
+git clone https://github.com/LHRICO78/Youtube-discord-bot.git
+cd Youtube-discord-bot
+
+# Configurer le token
+cp .env.example .env
+nano .env  # Ajoutez votre DISCORD_TOKEN
+
+# Démarrer avec le script automatique
+./start.sh
+
+# OU manuellement
+docker-compose up -d
+```
+
+📖 **Guide complet** : Consultez [DOCKER_INSTALL.md](DOCKER_INSTALL.md) pour les instructions détaillées.
+
+### Option 2 : Pterodactyl
+
+Pour un déploiement sur un panel Pterodactyl.
 
 1.  **Importer l'egg** : Allez dans la section "Nests" de votre panel Pterodactyl et importez le fichier `egg-discord-music-bot.json`.
 2.  **Créer un nouveau serveur** : Créez un nouveau serveur en utilisant l'egg que vous venez d'importer.
 3.  **Configurer les variables** : Dans l'onglet "Startup" de votre serveur, remplissez la variable `DISCORD_TOKEN` avec le token de votre bot Discord.
 4.  **Démarrer le serveur** : Démarrez le serveur. Pterodactyl installera automatiquement les dépendances et lancera le bot.
+
+### Option 3 : Installation Manuelle
+
+Pour une installation traditionnelle sur un serveur.
+
+```bash
+# Cloner le repository
+git clone https://github.com/LHRICO78/Youtube-discord-bot.git
+cd Youtube-discord-bot
+
+# Installer les dépendances
+pip install -r requirements.txt
+
+# Configurer le token
+export DISCORD_TOKEN="votre_token_ici"
+export PREFIX="!"
+
+# Lancer le bot
+python bot.py
+```
 
 ## Commandes du Bot
 
@@ -161,13 +207,20 @@ Seuls les utilisateurs avec la permission Discord **"Gérer le serveur"** peuven
 
 ```
 Youtube-discord-bot/
-├── bot.py                  # Fichier principal du bot
-├── config_manager.py       # Gestionnaire de configuration
-├── configs/                # Dossier des configurations (créé automatiquement)
-│   └── guild_configs.json  # Configurations par serveur
-├── requirements.txt        # Dépendances Python
-├── DESIGN.md              # Documentation technique
-├── README.md              # Ce fichier
+├── bot.py                      # Fichier principal du bot
+├── config_manager.py           # Gestionnaire de configuration
+├── configs/                    # Dossier des configurations (créé automatiquement)
+│   └── guild_configs.json      # Configurations par serveur
+├── requirements.txt            # Dépendances Python
+├── Dockerfile                  # Configuration Docker
+├── docker-compose.yml          # Configuration Docker Compose
+├── .env.example                # Exemple de configuration
+├── .dockerignore               # Fichiers à exclure de Docker
+├── start.sh                    # Script de démarrage rapide
+├── DESIGN.md                   # Documentation technique
+├── DOCKER_INSTALL.md           # Guide d'installation Docker
+├── GUIDE_UTILISATION.md        # Guide utilisateur complet
+├── README.md                   # Ce fichier
 └── egg-discord-music-bot.json  # Configuration Pterodactyl
 ```
 
