@@ -105,6 +105,7 @@ Seuls les utilisateurs avec la permission Discord **"Gérer le serveur"** peuven
 | `volume <0-100>` | `vol` | Change le volume de la musique. |
 | `leave` | `disconnect`, `dc` | Déconnecte le bot du salon vocal. |
 | `ping` | | Affiche la latence du bot. |
+| `help [commande]` | | Affiche la liste des commandes ou l'aide d'une commande spécifique. |
 
 ### Commandes de Personnalisation
 

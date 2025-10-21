@@ -100,7 +100,7 @@ def get_prefix(bot, message):
 intents = discord.Intents.default()
 intents.message_content = True
 intents.voice_states = True
-bot = commands.Bot(command_prefix=get_prefix, intents=intents)
+bot = commands.Bot(command_prefix=get_prefix, intents=intents, help_command=None)
 
 # Dictionnaire pour stocker les files d'attente par serveur
 music_queues = {}
@@ -374,6 +374,74 @@ async def leave(ctx):
 async def ping(ctx):
     """Affiche la latence du bot"""
     await ctx.send(f'🏓 Pong! Latence: {round(bot.latency * 1000)}ms')
+
+@bot.command(name='help', help='Affiche la liste des commandes disponibles')
+async def help_command(ctx, command_name: str = None):
+    """Affiche l'aide des commandes"""
+    prefix = config_manager.get_prefix(ctx.guild.id) if ctx.guild else DEFAULT_PREFIX
+    
+    if command_name:
+        # Aide pour une commande spécifique
+        cmd = bot.get_command(command_name)
+        if cmd:
+            embed = discord.Embed(
+                title=f"📖 Aide : {prefix}{cmd.name}",
+                description=cmd.help or "Aucune description disponible",
+                color=discord.Color.blue()
+            )
+            if cmd.aliases:
+                embed.add_field(name="Alias", value=", ".join(f"`{prefix}{a}`" for a in cmd.aliases), inline=False)
+            await ctx.send(embed=embed)
+        else:
+            await ctx.send(f"❌ Commande `{command_name}` introuvable")
+        return
+    
+    # Aide générale
+    embed = discord.Embed(
+        title="🎵 Bot Discord de Musique - Commandes",
+        description=f"Préfixe actuel : `{prefix}`\nUtilisez `{prefix}help <commande>` pour plus de détails",
+        color=discord.Color.blue()
+    )
+    
+    # Commandes de lecture
+    music_commands = [
+        ("play <URL/recherche>", "p", "Joue une musique"),
+        ("queue", "q, list", "Affiche la file d'attente"),
+        ("skip", "s", "Passe à la musique suivante"),
+        ("pause", "", "Met en pause"),
+        ("resume", "", "Reprend la lecture"),
+        ("stop", "", "Arrête et vide la file"),
+        ("clear", "", "Vide la file d'attente"),
+        ("remove <position>", "", "Retire une musique"),
+        ("nowplaying", "np, now", "Musique en cours"),
+        ("loop", "", "Active/désactive la boucle"),
+        ("volume <0-100>", "vol", "Change le volume"),
+        ("leave", "disconnect, dc", "Déconnecte le bot"),
+    ]
+    
+    music_text = "\n".join([f"`{prefix}{cmd}` {f'({aliases})' if aliases else ''} - {desc}" 
+                            for cmd, aliases, desc in music_commands])
+    embed.add_field(name="🎵 Commandes Musicales", value=music_text, inline=False)
+    
+    # Commandes utilitaires
+    util_commands = [
+        ("ping", "Affiche la latence"),
+        ("help [commande]", "Affiche cette aide"),
+    ]
+    
+    util_text = "\n".join([f"`{prefix}{cmd}` - {desc}" for cmd, desc in util_commands])
+    embed.add_field(name="🔧 Utilitaires", value=util_text, inline=False)
+    
+    # Commandes de personnalisation
+    embed.add_field(
+        name="⚙️ Personnalisation (Admins uniquement)",
+        value=f"`{prefix}music mod` - Système de personnalisation complet\n"
+              f"Changez le préfixe, renommez les commandes, gérez les permissions, etc.",
+        inline=False
+    )
+    
+    embed.set_footer(text=f"Pour personnaliser le bot : {prefix}music mod")
+    await ctx.send(embed=embed)
 
 # ==================== COMMANDES DE PERSONNALISATION ====================
 
